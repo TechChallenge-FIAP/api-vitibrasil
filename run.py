@@ -22,20 +22,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'banana'
 
-db.init_app(app)
-
 jwt = JWTManager(app)
 
+db.init_app(app)
+
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+        
     app.run('localhost', 5000, use_reloader=True, use_debugger=True)
-
-# Para criar o banco de dados sqlite
-# comente as 2 linhas acima, descomente as linha abaixo e execute o arquivo.
-
-#def create_db():
-#    with app.app_context():
-#        db.create_all()
-# 
-#if __name__ == "__main__":
-#    from auth.models.user import User
-#    create_db()
