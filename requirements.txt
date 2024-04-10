@@ -13,3 +13,6 @@ PyJWT==2.8.0
 SQLAlchemy==2.0.29
 typing_extensions==4.10.0
 Werkzeug==3.0.2
+beautifulsoup4==4.12.3
+requests==2.31.0
+pandas==2.2.1
