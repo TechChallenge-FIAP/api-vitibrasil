@@ -1,12 +1,11 @@
-from typing import List
-from bs4 import BeautifulSoup
-import requests
-import pandas as pd
-
-import io
 import asyncio
+import io
+from typing import List
 
 import aiohttp
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 
 
 async def get_csv_async(client, url):
