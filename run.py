@@ -1,30 +1,28 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from database import db
-from auth import auth
-from abas import (
-    comercializacao, 
-    exportacao, 
-    importacao, 
-    processamento, 
-    producao
-)
+from swagger import api
+from auth import Singup, Login
+from abas import Producao, Processamento, Importacao, Exportacao, Comercializacao
 
 app = Flask(__name__)
-app.register_blueprint(auth)
-app.register_blueprint(comercializacao)
-app.register_blueprint(exportacao)
-app.register_blueprint(importacao)
-app.register_blueprint(processamento)
-app.register_blueprint(producao)
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'banana'
-
-jwt = JWTManager(app)
-
+app.config['PROPAGATE_EXCEPTIONS'] = True
 db.init_app(app)
+
+api.add_resource(Singup, '/auth/singup')
+api.add_resource(Login, '/auth/login')
+api.add_resource(Producao, '/producao')
+api.add_resource(Processamento, '/processamento')
+api.add_resource(Importacao, '/importacao')
+api.add_resource(Exportacao, '/exportacao')
+api.add_resource(Comercializacao, '/comercializacao')
+api.init_app(app)
+
+# configure Flask App with JWT support
+jwt = JWTManager(app) 
 
 if __name__ == '__main__':
     with app.app_context():
