@@ -54,3 +54,5 @@ df_products.to_sql(
     if_exists="replace",
     index=False,
 )
+
+conn.close()
