@@ -8,11 +8,7 @@ RUN apt-get update && apt-get -y install make
 COPY abas abas
 COPY auth auth
 COPY scrapping scrapping
-COPY Makefile  Makefile
-COPY requirements.txt requirements.txt 
-COPY run.py run.py 
-COPY database.py database.py 
-COPY boot.sh boot.sh
+COPY Makefile requirements.txt run.py database.py boot.sh swagger.py ./
 
 RUN make install
 RUN chmod +x boot.sh
