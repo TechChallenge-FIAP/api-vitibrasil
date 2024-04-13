@@ -18,7 +18,7 @@ df_columns = ["index", "produtos_ext", "produtos"] + years_col
 df_comercio.columns = df_columns
 
 df_unpivot = df_comercio.melt(
-    id_vars="produtos", value_vars=years_col, var_name="ano", value_name="quantidade"
+    id_vars="produtos", value_vars=years_col, var_name="ano", value_name="quantidade_l"
 )
 
 df_unpivot["categoria"] = np.where(
@@ -31,11 +31,11 @@ df_categories = df_unpivot.copy()
 
 df_categories = df_categories[df_categories["produtos"].str.isupper()]
 
-df_categories = df_categories[["categoria", "ano", "quantidade"]]
+df_categories = df_categories[["categoria", "ano", "quantidade_l"]]
 
 df_products = df_unpivot[~df_unpivot["produtos"].str.isupper()]
 
-df_products = df_products[["produtos", "categoria", "ano", "quantidade"]]
+df_products = df_products[["produtos", "categoria", "ano", "quantidade_l"]]
 
 
 conn = sqlite3.connect("instance/Database.db")
