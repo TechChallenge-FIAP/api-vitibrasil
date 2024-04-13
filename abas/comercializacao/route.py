@@ -17,9 +17,9 @@ class Comercializacao(Resource):
 
         query = f"select * from comercio_{table}"
 
-        rows = cursor.execute(query)
+        rows = cursor.execute(query).fetchall()
 
         conn.commit()
         conn.close()
 
-        return jsonify(dict(ix) for ix in rows)
+        return jsonify([dict(ix) for ix in rows])
