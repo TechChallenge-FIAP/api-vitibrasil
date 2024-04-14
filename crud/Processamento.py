@@ -47,7 +47,7 @@ df_union = df_union.rename(columns={"cultivar": "tipo_uva"})
 
 df_union["2019"] = df_union["2019"].replace("nd", "0").astype(int)
 
-df_union["2019"] = df_union["2022"].replace("*", "0").astype(int)
+df_union["2022"] = df_union["2022"].replace("*", "0").astype(int)
 
 df_unpivot = df_union.melt(
     id_vars=["grupo", "tipo_uva"],
