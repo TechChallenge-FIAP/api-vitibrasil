@@ -28,4 +28,4 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         
-    app.run('localhost', 5000, use_reloader=True, use_debugger=True)
+    app.run(use_reloader=True, use_debugger=True)

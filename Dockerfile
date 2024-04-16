@@ -10,7 +10,7 @@ COPY auth auth
 COPY scrapping scrapping
 COPY crud crud
 COPY services services
-COPY Makefile requirements.txt run.py database.py boot.sh swagger.py ./
+COPY Makefile requirements.txt app.py database.py boot.sh swagger.py ./
 
 RUN mkdir tmp
 RUN make install
