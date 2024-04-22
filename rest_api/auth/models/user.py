@@ -1,4 +1,4 @@
-from database import db
+from rest_api.database import db
 from passlib.hash import pbkdf2_sha256 as sha256
 
 class User(db.Model):
@@ -19,8 +19,8 @@ class User(db.Model):
         return sha256.verify(password, hash_)
 
     @classmethod
-    def all_users(self, page=1, per_page=7):
-        return self.query.all().paginate(page=page, error_out=False, max_per_page=per_page)
+    def all_users(self):
+        return self.query.all()
 
     @staticmethod
     def save(user):

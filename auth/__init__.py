@@ -1,1 +1,0 @@
-from auth.route import Singup, Login

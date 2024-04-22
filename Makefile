@@ -3,4 +3,4 @@ install:
 
 run-prod:
 	python3 scrapping/scrapping.py
-	python3 -m flask run --host=0.0.0.0
+	python3 -m flask --app rest_api/app.py run --host=0.0.0.0

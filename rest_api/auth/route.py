@@ -6,8 +6,8 @@ from flask_jwt_extended import (
     get_jwt_identity,
     jwt_required
 )
-from swagger import api
-from auth.models.user import User
+from rest_api.swagger import api
+from rest_api.auth.models.user import User
 
 class Singup(Resource):
     @api.expect(api.model('Singup', {
