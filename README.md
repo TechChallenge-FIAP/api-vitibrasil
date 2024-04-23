@@ -20,7 +20,7 @@ docker run -it --network="host" vitibrasil_api
 Esse comando irá mostrar os logs da API, caso queira sair basta aperta o Ctrl + C
 
 ```
-docker run -d --network="host" vitibrasil_api
+docker run -d -p 5000:5000 vitibrasil_api
 ```
 
 Esse comando somente roda o container sem precisar acessar o container para ver algum log.
