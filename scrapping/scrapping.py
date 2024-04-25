@@ -1,15 +1,8 @@
 import asyncio
 import io
 import time
-from typing import List
-
-from http import HTTPStatus
-from venv import logger
-from requests.exceptions import HTTPError
-from urllib3.exceptions import NewConnectionError
 
 import aiohttp
-import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
@@ -26,8 +19,7 @@ async def get_csv_async(client: aiohttp.ClientSession, url: str, filename: str):
                     with open(f"tmp/{filename}", mode="w") as file:
                         print(text_io.getvalue(), file=file)
                 response.raise_for_status()
-        except Exception as e:
-            logger.info("tentativa " + str(n))
+        except Exception:
             time.sleep(10)
             continue
 
@@ -46,8 +38,7 @@ for n in range(retries):
     try:
         res = requests.get(base_url)
         res.raise_for_status()
-    except Exception as e:
-        logger.info("tentativa " + str(n))
+    except Exception:
         time.sleep(10)
         continue
 
@@ -62,9 +53,6 @@ if res.status_code == 200:
         for file in files_href
         if "csv" in file["href"]
     }
-
-else:
-    print("Error")
 
 
 csv_files_list = asyncio.get_event_loop().run_until_complete(
