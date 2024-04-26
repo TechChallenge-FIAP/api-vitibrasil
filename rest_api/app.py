@@ -2,6 +2,7 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from rest_api.database import db
 from rest_api.swagger import api
+from flask_migrate import Migrate
 from rest_api.auth import Singup, Login
 from rest_api.abas import ProducaoProduto, ProducaoCategoria, Processamento, Importacao, Exportacao, Comercializacao
 
@@ -25,5 +26,6 @@ api.init_app(app)
 jwt = JWTManager(app) 
 
 db.init_app(app)
+migrate = Migrate(app, db)
 with app.app_context():
     db.create_all()
