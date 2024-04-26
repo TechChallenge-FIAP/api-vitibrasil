@@ -28,14 +28,13 @@ df_unpivot["categoria"] = np.where(
 df_unpivot["categoria"] = df_unpivot["categoria"].ffill()
 
 df_categories = df_unpivot.copy()
-
 df_categories = df_categories[df_categories["produtos"].str.isupper()]
-
-df_categories = df_categories[["categoria", "ano", "quantidade_l"]]
+df_categories["id"] = df_categories.index + 1
+df_categories = df_categories[["id", "categoria", "ano", "quantidade_l"]]
 
 df_products = df_unpivot[~df_unpivot["produtos"].str.isupper()]
-
-df_products = df_products[["produtos", "categoria", "ano", "quantidade_l"]]
+df_products["id"] = df_products.index + 1
+df_products = df_products[["id", "produtos", "categoria", "ano", "quantidade_l"]]
 
 
 conn = sqlite3.connect("instance/Database.db")
