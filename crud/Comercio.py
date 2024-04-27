@@ -13,28 +13,32 @@ years_col = [
     year for year in range(1970, 1970 + (len(df_comercio.columns) - info_cols))
 ]
 
-df_columns = ["index", "produtos_ext", "produtos"] + years_col
+df_columns = ["id", "produtos_ext", "produto"] + years_col
 
 df_comercio.columns = df_columns
 
 df_unpivot = df_comercio.melt(
-    id_vars="produtos", value_vars=years_col, var_name="ano", value_name="quantidade_l"
+    id_vars=["id", "produto"],
+    value_vars=years_col,
+    var_name="ano",
+    value_name="quantidade_l",
 )
 
 df_unpivot["categoria"] = np.where(
-    df_unpivot["produtos"].str.isupper(), df_unpivot["produtos"], None
+    df_unpivot["produto"].str.isupper(), df_unpivot["produto"], None
 )
 
 df_unpivot["categoria"] = df_unpivot["categoria"].ffill()
 
 df_categories = df_unpivot.copy()
-df_categories = df_categories[df_categories["produtos"].str.isupper()]
-df_categories["id"] = df_categories.index + 1
+df_categories = df_categories[df_categories["produto"].str.isupper()]
 df_categories = df_categories[["id", "categoria", "ano", "quantidade_l"]]
+df_categories["id"] = np.arange(0, len(df_categories))
 
-df_products = df_unpivot[~df_unpivot["produtos"].str.isupper()]
-df_products["id"] = df_products.index + 1
-df_products = df_products[["id", "produtos", "categoria", "ano", "quantidade_l"]]
+df_products = df_unpivot[~df_unpivot["produto"].str.isupper()]
+df_products = df_products[["id", "produto", "categoria", "ano", "quantidade_l"]]
+df_products["id"] = np.arange(0, len(df_products))
+df_products["produto"] = df_products["produto"].str.strip()
 
 
 conn = sqlite3.connect("instance/Database.db")

@@ -20,11 +20,14 @@ class ComercializacaoProduto(Resource):
         categoria = request.args.get("categoria")
         ano = request.args.get("ano")
 
-        comercializacao_produtos = Produto.execute_query(produto, categoria, ano)
+        comercializacao_produtos = Produto.execute_query(
+            produto=produto, categoria=categoria, ano=ano
+        )
 
         return {
             "data": [
                 {
+                    "id": produto.id,
                     "produto": produto.produto,
                     "categoria": produto.categoria,
                     "ano": produto.ano,
@@ -53,6 +56,7 @@ class ComercializacaoCategoria(Resource):
         return {
             "data": [
                 {
+                    "id": categoria.id,
                     "produto": categoria.produto,
                     "categoria": categoria.categoria,
                     "ano": categoria.ano,

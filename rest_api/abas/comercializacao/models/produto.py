@@ -3,10 +3,10 @@ from rest_api.database import db
 
 class Produto(db.Model):
 
-    __tablename__ = "comercio_produto"
+    __tablename__ = "comercio_produtos"
 
     id = db.Column(db.Integer, primary_key=True)
-    produtos = db.Column(db.String(120), nullable=False)
+    produto = db.Column(db.String(120), nullable=False)
     categoria = db.Column(db.String(120), nullable=False)
     ano = db.Column(db.Integer, nullable=False)
     quantidade_l = db.Column(db.Integer, nullable=False)
@@ -15,13 +15,17 @@ class Produto(db.Model):
     def execute_query(
         self, produto: str = None, categoria: str = None, ano: str = None
     ):
-        query = self.query
+        result = self.query
+
+        print(produto)
+        print(categoria)
+        print(ano)
 
         if produto is not None:
-            query = query.filter("%" + produto + "%")
+            result = result.filter(self.produto.like("%" + produto + "%"))
         if categoria is not None:
-            query = query.filter("%" + categoria + "%")
+            result = result.filter(self.categoria.like("%" + categoria + "%"))
         if ano is not None:
-            query = query.filter_by(ano=ano)
+            result = result.filter_by(ano=ano)
 
-        return query.all()
+        return result.all()

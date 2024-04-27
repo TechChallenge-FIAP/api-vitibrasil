@@ -3,7 +3,7 @@ from rest_api.database import db
 
 class Categoria(db.Model):
 
-    __tablename__ = "comercio_categoria"
+    __tablename__ = "comercio_categorias"
 
     id = db.Column(db.Integer, primary_key=True)
     categoria = db.Column(db.String(120), nullable=False)
