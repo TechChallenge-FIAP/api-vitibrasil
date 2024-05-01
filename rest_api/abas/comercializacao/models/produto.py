@@ -13,13 +13,14 @@ class Produto(db.Model):
 
     @classmethod
     def execute_query(
-        self, produto: str = None, categoria: str = None, ano: str = None
+        self,
+        page: int,
+        per_page: int,
+        produto: str = None,
+        categoria: str = None,
+        ano: str = None,
     ):
         result = self.query
-
-        print(produto)
-        print(categoria)
-        print(ano)
 
         if produto is not None:
             result = result.filter(self.produto.like("%" + produto + "%"))
@@ -28,4 +29,4 @@ class Produto(db.Model):
         if ano is not None:
             result = result.filter_by(ano=ano)
 
-        return result.all()
+        return result.paginate(page=page, per_page=per_page)
