@@ -11,17 +11,21 @@ class ComercializacaoProduto(Resource):
             "produto": "Nome do produto",
             "categoria": "Categoria do produto",
             "ano": "Ano de produção do produto",
+            "page": "Página",
+            "per_page": "Resultados por página",
         }
     )
     @api.doc(security="Bearer")
     @jwt_required()
     def get(self):
-        produto = request.args.get("produto")
-        categoria = request.args.get("categoria")
-        ano = request.args.get("ano")
+        produto = request.args.get("produto", type=str)
+        categoria = request.args.get("categoria", type=str)
+        ano = request.args.get("ano", type=int)
+        page = request.args.get("page", default=1, type=int)
+        per_page = request.args.get("per_page", default=50, type=int)
 
         comercializacao_produtos = Produto.execute_query(
-            produto=produto, categoria=categoria, ano=ano
+            page=page, per_page=per_page, produto=produto, categoria=categoria, ano=ano
         )
 
         return {
@@ -34,7 +38,13 @@ class ComercializacaoProduto(Resource):
                     "quantidade_l": produto.quantidade_l,
                 }
                 for produto in comercializacao_produtos
-            ]
+            ],
+            "pagination": {
+                "count": comercializacao_produtos.total,
+                "page": page,
+                "per_page": per_page,
+                "pages": comercializacao_produtos.pages,
+            },
         }
 
 
