@@ -1,5 +1,4 @@
-import json
-from flask import request, jsonify
+from flask import request
 from flask_jwt_extended import jwt_required
 from flask_restx import Resource 
 from rest_api.swagger import api
@@ -7,9 +6,11 @@ from rest_api.abas.producao.models import Produto, Categoria
 
 class ProducaoProduto(Resource):
     @api.doc(params={
-        'produto': 'Nome do produto',
-        'categoria': 'Categoria do produto',
-        'ano': 'Ano de produção do produto'
+        "produto": "Nome do produto",
+        "categoria": "Categoria do produto",
+        "ano": "Ano de produção do produto",
+        "page": "Página",
+        "per_page": "Resultados por página",
     })
     @api.doc(security='Bearer')
     @jwt_required()
@@ -17,31 +18,30 @@ class ProducaoProduto(Resource):
         produto = request.args.get('produto')
         categoria = request.args.get('categoria')
         ano = request.args.get('ano')
+        page = request.args.get("page", default=1, type=int)
+        per_page = request.args.get("per_page", default=50, type=int)
 
-        if produto and categoria and ano:
-            producao_produtos = Produto.find_by_produto_and_categoria_and_ano(produto, categoria, ano)
-        elif produto and categoria:
-            producao_produtos = Produto.find_by_produto_and_categoria(produto, categoria)
-        elif produto and ano:
-            producao_produtos = Produto.find_by_produto_and_ano(produto, ano)
-        elif categoria and ano:
-            producao_produtos = Produto.find_by_categoria_and_ano(categoria, ano)
-        elif produto:
-            producao_produtos = Produto.find_by_produto(produto)
-        elif categoria:
-            producao_produtos = Produto.find_by_categoria(categoria)
-        elif ano:
-            producao_produtos = Produto.find_by_ano(ano)
-        else:
-            producao_produtos = Produto.all_produto()
+        producao_produtos = Produto.execute_query(
+            page=page, per_page=per_page, produto=produto, categoria=categoria, ano=ano
+        )
         
         return {
-            "data": [{
-                "produto": producao_produto.produto,
-                "categoria": producao_produto.categoria,
-                "ano": producao_produto.ano,
-                "quantidade_l": producao_produto.quantidade_l
-            } for producao_produto in producao_produtos]
+            "data": [
+                {
+                    "id": produto.id,
+                    "produto": produto.produto,
+                    "categoria": produto.categoria,
+                    "ano": produto.ano,
+                    "quantidade_l": produto.quantidade_l,
+                }
+                for produto in producao_produtos
+            ],
+            "pagination": {
+                "count": producao_produtos.total,
+                "page": page,
+                "per_page": per_page,
+                "pages": producao_produtos.pages,
+            },
         }
         
 class ProducaoCategoria(Resource):
@@ -55,14 +55,7 @@ class ProducaoCategoria(Resource):
         categoria = request.args.get('categoria')
         ano = request.args.get('ano')
 
-        if categoria and ano:
-            producao_categorias = Categoria.find_by_categoria_and_ano(categoria)
-        elif categoria:
-            producao_categorias = Categoria.find_by_categoria(categoria)
-        elif ano:
-            producao_categorias = Categoria.find_by_ano(ano)
-        else:
-            producao_categorias = Categoria.all_categoria()
+        producao_categorias = Categoria.execute_query(categoria, ano)
         
         return {
             "data": [{
