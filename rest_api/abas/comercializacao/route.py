@@ -53,15 +53,21 @@ class ComercializacaoCategoria(Resource):
         params={
             "categoria": "Categoria do produto",
             "ano": "Ano de produção do produto",
+            "page": "Página",
+            "per_page": "Resultados por página",
         }
     )
     @api.doc(security="Bearer")
     @jwt_required()
     def get(self):
-        categoria = request.args.get("categoria")
-        ano = request.args.get("ano")
+        categoria = request.args.get("categoria", type=str)
+        ano = request.args.get("ano", type=int)
+        page = request.args.get("page", default=1, type=int)
+        per_page = request.args.get("per_page", default=50, type=int)
 
-        comercializacao_categorias = Categoria.execute_query(categoria, ano)
+        comercializacao_categorias = Categoria.execute_query(
+            page=page, per_page=per_page, categoria=categoria, ano=ano
+        )
 
         return {
             "data": [
