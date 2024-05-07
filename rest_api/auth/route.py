@@ -1,4 +1,4 @@
-import json
+import json, re
 from flask import request, jsonify
 from flask_restx import Resource, fields
 from flask_jwt_extended import (
@@ -20,6 +20,11 @@ class Singup(Resource):
         username = data['username']
         email = data['email']
         password = data['password']
+
+        r = re.compile(r'^[\w-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$')
+
+        if not r.match(email):
+            return f'Formato de e-mail inválido', 400
 
         # Searching user by email
         current_user = User.find_by_email(email)
@@ -58,6 +63,11 @@ class Login(Resource):
     def post(self):
         data = json.loads(request.data)
         email = data['email']
+
+        r = re.compile(r'^[\w-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$')
+
+        if not r.match(email):
+            return f'Formato de e-mail inválido', 400
 
         # Searching user by email
         current_user = User.find_by_email(email)
