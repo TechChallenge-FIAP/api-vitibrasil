@@ -10,20 +10,12 @@ class Categoria(db.Model):
     quantidade_l = db.Column(db.Integer, nullable=False)
     
     @classmethod
-    def find_by_categoria(self, categoria):
-        return self.query.filter_by(categoria=categoria).all()
-    
-    @classmethod
-    def find_by_ano(self, ano):
-        return self.query.filter_by(ano=ano).all()
-    
-    @classmethod
-    def find_by_categoria_and_ano(self, categoria, ano):
-        return self.query.filter(
-            self.categoria.like("%" + categoria + "%"), 
-            self.ano.like(ano)
-        ).all()
+    def execute_query(self, categoria: str = None, ano: str = None):
+        query = self.query
 
-    @classmethod
-    def all_categoria(self):
-        return self.query.all()
+        if categoria is not None:
+            query = query.filter("%" + categoria + "%")
+        if ano is not None:
+            query = query.filter_by(ano=ano)
+
+        return query.all()
