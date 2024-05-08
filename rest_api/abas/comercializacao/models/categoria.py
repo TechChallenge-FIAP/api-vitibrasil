@@ -11,12 +11,18 @@ class Categoria(db.Model):
     quantidade_l = db.Column(db.Integer, nullable=False)
 
     @classmethod
-    def execute_query(self, categoria: str = None, ano: str = None):
-        query = self.query
+    def execute_query(
+        self,
+        page: int,
+        per_page: int,
+        categoria: str = None,
+        ano: str = None,
+    ):
+        result = self.query
 
         if categoria is not None:
-            query = query.filter("%" + categoria + "%")
+            result = result.filter("%" + categoria + "%")
         if ano is not None:
-            query = query.filter_by(ano=ano)
+            result = result.filter_by(ano=ano)
 
-        return query.all()
+        return result.paginate(page=page, per_page=per_page)
