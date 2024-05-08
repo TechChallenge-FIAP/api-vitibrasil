@@ -20,9 +20,6 @@ class ExportacaoEmbrapa(db.Model):
         ano: str = None,
         grupo: str = None):
 
-        print(pais)
-        print(ano)
-        print(grupo)
 
         result = self.query
 
