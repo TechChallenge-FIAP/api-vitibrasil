@@ -73,11 +73,16 @@ class ComercializacaoCategoria(Resource):
             "data": [
                 {
                     "id": categoria.id,
-                    "produto": categoria.produto,
                     "categoria": categoria.categoria,
                     "ano": categoria.ano,
                     "quantidade_l": categoria.quantidade_l,
                 }
                 for categoria in comercializacao_categorias
-            ]
+            ],
+            "pagination": {
+                "count": comercializacao_categorias.total,
+                "page": page,
+                "per_page": per_page,
+                "pages": comercializacao_categorias.pages,
+            },
         }
