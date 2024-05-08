@@ -5,3 +5,5 @@ venv/*
 *.db
 tmp/
 .idea
+migrations/*
+instance/*

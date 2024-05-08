@@ -67,6 +67,7 @@ df_final = pd.merge(
 df_final = df_final.rename(columns={'País': 'pais', 'Id': 'id'}) 
 
 conn = sqlite3.connect("instance/Database.db")
+print(df_final)
 
 df_final.to_sql(
     name="exportacao",
