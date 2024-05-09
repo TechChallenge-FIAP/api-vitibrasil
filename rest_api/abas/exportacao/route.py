@@ -16,9 +16,9 @@ class Exportacao(Resource):
     @api.doc(security="Bearer")
     @jwt_required()
     def get(self):
-        grupo = request.args.get("grupo")
-        pais = request.args.get("pais")
-        ano = request.args.get("ano")
+        grupo = request.args.get("grupo", type=str)
+        pais = request.args.get("pais", type=str)
+        ano = request.args.get("ano", type=int)
         page = request.args.get("page", default=1, type=int)
         per_page = request.args.get("per_page", default=50, type=int)
         
