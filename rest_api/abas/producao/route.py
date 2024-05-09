@@ -47,20 +47,33 @@ class ProducaoProduto(Resource):
 class ProducaoCategoria(Resource):
     @api.doc(params={
         'categoria': 'Nome da categoria',
-        'ano': 'Ano de produção da categoria do produto'
+        'ano': 'Ano de produção da categoria do produto',
+        "page": "Página",
+        "per_page": "Resultados por página",
     })
     @api.doc(security='Bearer')
     @jwt_required()
     def get(self):
         categoria = request.args.get('categoria')
         ano = request.args.get('ano')
+        page = request.args.get("page", default=1, type=int)
+        per_page = request.args.get("per_page", default=50, type=int)
 
         producao_categorias = Categoria.execute_query(categoria, ano)
         
         return {
-            "data": [{
-                "categoria": producao_categoria.categoria,
-                "ano": producao_categoria.ano,
-                "quantidade_l": producao_categoria.quantidade_l
-            } for producao_categoria in producao_categorias]
+            "data": [
+                {
+                    "categoria": producao_categoria.categoria,
+                    "ano": producao_categoria.ano,
+                    "quantidade_l": producao_categoria.quantidade_l
+                } 
+                for producao_categoria in producao_categorias
+            ],
+            "pagination": {
+                "count": producao_categorias.total,
+                "page": page,
+                "per_page": per_page,
+                "pages": producao_categorias.pages,
+            },
         }
