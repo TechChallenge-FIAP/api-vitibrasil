@@ -11,6 +11,10 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
     
     @classmethod
+    def find_by_username(self, username):
+        return self.query.filter_by(username=username).first()
+    
+    @classmethod
     def find_by_email(self, email):
         return self.query.filter_by(email=email).first()
 
