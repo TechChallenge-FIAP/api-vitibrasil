@@ -58,5 +58,3 @@ if res.status_code == 200:
 csv_files_list = asyncio.get_event_loop().run_until_complete(
     get_all_csvs_async(files_dict)
 )
-
-print("teste")
