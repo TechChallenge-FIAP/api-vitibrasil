@@ -5,7 +5,6 @@ install:
 	source venv/bin/activate; \
 	pip install -r requirements.txt; \
 
-
 run-prod:
 	\
 	source venv/bin/activate; \
