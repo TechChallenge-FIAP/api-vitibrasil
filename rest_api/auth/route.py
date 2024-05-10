@@ -26,9 +26,12 @@ class Singup(Resource):
         if not r.match(email):
             return f'Formato de e-mail inválido', 400
 
-        # Searching user by email
+        # Searching user by username and email
+        current_user = User.find_by_username(username)
+        if current_user:
+            return f'O usuário com username {username} já existe|', 400
+        
         current_user = User.find_by_email(email)
-            
         if current_user:
             return f'O usuário com e-mail {email} já existe|', 400
             
