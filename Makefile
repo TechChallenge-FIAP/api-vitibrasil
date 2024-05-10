@@ -1,5 +1,10 @@
 install:
-	pip3 install -r requirements.txt
+	\ 
+	python3.8 -m pip install virtualenv; \
+	python3.8 -m venv venv; \
+	source venv/bin/activate; \
+	pip install -r requirements.txt; \
+
 
 run-prod:
 	\
