@@ -8,4 +8,4 @@ class Processamento(Resource):
     @api.doc(security="Bearer")
     @jwt_required()
     def get(self):
-        return jsonify({"message": "Processamento"})
+        return jsonify({"message": "Processamento"}) 
