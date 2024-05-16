@@ -9,11 +9,18 @@ from flask_jwt_extended import (
 from rest_api.swagger import api
 from rest_api.auth.models.user import User
 
+@api.doc(description="Este endpoint realiza o cadastro de usuarios na base")
 class Singup(Resource):
     @api.expect(api.model('Singup', {
         'username': fields.String(required=True, description='Nome do usuário'),
         'email': fields.String(required=True, description='E-mail do usuário'),
         'password': fields.String(required=True, description='Senha do usuário')
+    }))
+    @api.response(200, 'Success', api.model('SingupPostSuccess', {
+        'message': fields.String(description='Mensagem de retorno')
+    }))
+    @api.response(400, 'BadRequest', api.model('SingupPostBadRequest', {
+        'message': fields.String(description='Mensagem de retorno')
     }))
     def post(self):
         data = json.loads(request.data)
@@ -24,16 +31,16 @@ class Singup(Resource):
         r = re.compile(r'^[\w-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$')
 
         if not r.match(email):
-            return f'Formato de e-mail inválido', 400
+            return jsonify({'message': 'Formato de e-mail inválido'}), 400
 
         # Searching user by username and email
         current_user = User.find_by_username(username)
         if current_user:
-            return f'O usuário com username {username} já existe|', 400
+            return jsonify({'message': f'O usuário com username {username} já existe'}), 400
         
         current_user = User.find_by_email(email)
         if current_user:
-            return f'O usuário com e-mail {email} já existe|', 400
+            return jsonify({'message': f'O usuário com e-mail {email} já existe'}), 400
             
         user = User(
             username=username, 
@@ -43,9 +50,17 @@ class Singup(Resource):
 
         User.save(user)
 
-        return 'Usuario criado'
+        return jsonify({'message': 'Usuario criado'})
 
+@api.doc(description="Este endpoint realiza o login do usuario")
 class Login(Resource):
+    @api.response(200, 'Success', api.model('LoginGetSuccess', {
+        'email': fields.String(description='E-mail logado'),
+        'username': fields.String(description='Username logado')
+    }))
+    @api.response(500, 'Error', api.model('LoginGetError', {
+        'message': fields.String(description='Mensagem de erro')
+    }))
     @api.doc(security='Bearer')
     @jwt_required()
     def get(self):
@@ -63,6 +78,12 @@ class Login(Resource):
         'email': fields.String(required=True, description='E-mail do usuário'),
         'password': fields.String(required=True, description='Senha do usuário')
     }))
+    @api.response(200, 'Success', api.model('LoginPostSuccess', {
+        'token': fields.String(description='Token de autenticação')
+    }))
+    @api.response(400, 'BadRequest', api.model('LoginPostBadRequest', {
+        'message': fields.String(description='Mensagem de retorno')
+    }))
     def post(self):
         data = json.loads(request.data)
         email = data['email']
@@ -70,13 +91,13 @@ class Login(Resource):
         r = re.compile(r'^[\w-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$')
 
         if not r.match(email):
-            return f'Formato de e-mail inválido', 400
+            return jsonify({'message': 'Formato de e-mail inválido'}), 400
 
         # Searching user by email
         current_user = User.find_by_email(email)
             
         if not current_user:
-            return f'O usuário com e-mail {email} não existe|', 400
+            return jsonify({'message': f'O usuário com e-mail {email} não existe'}), 400
             
         # user exists, comparing password and hash
         if User.verify_hash(data['password'], current_user.password):
@@ -88,4 +109,4 @@ class Login(Resource):
             }
 
         else:
-            return "Senha invalida!", 400
+            return jsonify({'message': 'Senha invalida!'}), 400
