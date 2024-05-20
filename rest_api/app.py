@@ -8,6 +8,7 @@ from rest_api.abas import (
     ProducaoProduto,
     ProducaoCategoria,
     ProcessamentoCategoria,
+    ProcessamentoTipo,
     Importacao,
     Exportacao,
     ComercializacaoProduto,

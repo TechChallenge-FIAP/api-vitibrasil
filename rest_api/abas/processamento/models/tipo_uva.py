@@ -10,7 +10,7 @@ class Tipouva(db.Model):
     sub_categoria = db.Column(db.String(120), nullable=False)
     tipo_uva = db.Column(db.String(120), nullable=False)
     ano = db.Column(db.Integer, nullable=False)
-    quantidade_l = db.Column(db.Integer, nullable=False)
+    quantidade_kg = db.Column(db.Integer, nullable=False)
 
     @classmethod
     def execute_query(

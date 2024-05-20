@@ -31,7 +31,7 @@ class ProcessamentoCategoria(Resource):
                     "grupo": sub_categoria.grupo,
                     "sub_categoria": sub_categoria.sub_categoria,
                     "ano": sub_categoria.ano,
-                    "quantidade_1": sub_categoria.quantidade_1
+                    "quantidade_kg": sub_categoria.quantidade_kg
                 }
                 for sub_categoria in processamento_categoria
             ],
@@ -72,7 +72,7 @@ class ProcessamentoTipo(Resource):
                     "sub_categoria": sub_categoria.sub_categoria,
                     "tipo_uva": tipo_uva.sub_categoria,
                     "ano": sub_categoria.ano,
-                    "quantidade_1": sub_categoria.quantidade_1
+                    "quantidade_kg": sub_categoria.quantidade_kg
                 }
                 for sub_categoria in processamento_categoria
             ],
