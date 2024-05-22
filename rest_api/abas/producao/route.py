@@ -4,6 +4,7 @@ from flask_restx import Resource
 from rest_api.swagger import api
 from rest_api.abas.producao.models import Produto, Categoria
 
+@api.doc(description="Este endpoint realiza a busca Produção de vinhos, sucos e derivados na base (produto). Se nenhum parâmetro for passado irá trazer a base completa.")
 class ProducaoProduto(Resource):
     @api.doc(params={
         "produto": "Nome do produto",
@@ -12,6 +13,7 @@ class ProducaoProduto(Resource):
         "page": "Página",
         "per_page": "Resultados por página",
     })
+    
     @api.doc(security='Bearer')
     @jwt_required()
     def get(self):
@@ -43,7 +45,8 @@ class ProducaoProduto(Resource):
                 "pages": producao_produtos.pages,
             },
         }
-        
+
+@api.doc(description="Este endpoint realiza a busca Produção de vinhos, sucos e derivados na base (categoria). Se nenhum parâmetro for passado irá trazer a base completa.")      
 class ProducaoCategoria(Resource):
     @api.doc(params={
         'categoria': 'Nome da categoria',

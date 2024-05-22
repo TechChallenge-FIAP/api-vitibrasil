@@ -4,6 +4,7 @@ from rest_api.swagger import api
 from flask_restx import Resource
 from rest_api.abas.exportacao.models import ExportacaoEmbrapa
 
+@api.doc(description="Este endpoint realiza a busca de Exportação de derivados de uva na base. Se nenhum parâmetro for passado irá trazer a base completa.")
 class Exportacao(Resource):
     @api.doc(
         params={
