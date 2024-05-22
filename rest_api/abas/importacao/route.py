@@ -4,6 +4,7 @@ from flask_restx import Resource
 from rest_api.swagger import api
 from rest_api.abas.importacao.models import Importacao as ImportacaoModel
 
+@api.doc(description="Este endpoint realiza a busca de Importação de derivados de uva na base. Se nenhum parâmetro for passado irá trazer a base completa.")
 class Importacao(Resource):
     @api.doc(params={
         "pais": "País de origem da importação",
@@ -15,9 +16,9 @@ class Importacao(Resource):
     @api.doc(security='Bearer')
     @jwt_required()
     def get(self):
-        pais = request.args.get('pais')
-        grupo = request.args.get('grupo')
-        ano = request.args.get('ano')
+        pais = request.args.get('pais', type=str)
+        grupo = request.args.get('grupo', type=str)
+        ano = request.args.get('ano', type=str)
         page = request.args.get("page", default=1, type=int)
         per_page = request.args.get("per_page", default=50, type=int)
 

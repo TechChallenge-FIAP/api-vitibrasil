@@ -4,7 +4,7 @@ from rest_api.swagger import api
 from flask_restx import Resource
 from rest_api.abas.comercializacao.models import Produto, Categoria
 
-
+@api.doc(description="Este endpoint realiza a busca da Comercialização de vinhos e derivados (produto). Se nenhum parâmetro for passado irá trazer a base completa.")
 class ComercializacaoProduto(Resource):
     @api.doc(
         params={
@@ -47,7 +47,7 @@ class ComercializacaoProduto(Resource):
             },
         }
 
-
+@api.doc(description="Este endpoint realiza a busca da Comercialização de vinhos e derivados (categoria). Se nenhum parâmetro for passado irá trazer a base completa.")
 class ComercializacaoCategoria(Resource):
     @api.doc(
         params={
