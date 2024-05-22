@@ -24,8 +24,6 @@ df_unpivot = df_comercio.melt(
     value_name="quantidade_l",
 )
 
-print(df_unpivot)
-
 df_unpivot["categoria"] = np.where(
     df_unpivot["produto"].str.isupper(), df_unpivot["produto"], None
 )
