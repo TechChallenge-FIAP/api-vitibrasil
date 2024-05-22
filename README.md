@@ -85,12 +85,6 @@ A arquitetura da aplicação é composta por:
 2. **Banco de Dados**: Utiliza SQLite para armazenamento local dos dados.
 3. **Scripts de Ingestão**: Scripts que fazem o download e o parsing dos dados CSV da Embrapa, inserindo-os no banco de dados.
 
-### Endpoints Principais
-
-- **/v1/wineries**: Retorna a lista de vinícolas.
-- **/v1/wines**: Retorna a lista de vinhos.
-- **/v1/regions**: Retorna a lista de regiões produtoras.
-
 ## Pipeline de Deploy
 
 Utilizamos GitHub Actions e Terraform para gerenciar o pipeline de deploy do projeto na AWS.
