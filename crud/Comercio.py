@@ -3,9 +3,7 @@ import numpy as np
 import sqlite3
 
 
-df_comercio: pd.DataFrame = pd.read_csv(
-    "tmp/Comercio.csv", sep=None, engine="python", header=None
-)
+df_comercio: pd.DataFrame = pd.read_csv("tmp/Comercio.csv", sep=None, engine="python")
 
 info_cols = 3
 
@@ -13,9 +11,11 @@ years_col = [
     year for year in range(1970, 1970 + (len(df_comercio.columns) - info_cols))
 ]
 
+
 df_columns = ["id", "produtos_ext", "produto"] + years_col
 
 df_comercio.columns = df_columns
+
 
 df_unpivot = df_comercio.melt(
     id_vars=["id", "produto"],
