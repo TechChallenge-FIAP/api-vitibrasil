@@ -77,13 +77,54 @@ Há duas opções para executar o container:
 
 ## Arquitetura
 
-### Overview
+![Arquitetura](images/ArquiteturaAPI.drawio.png)
 
-A arquitetura da aplicação é composta por:
+### Push e Execução da Esteira:
+Cada push no repositório aciona a esteira de CI/CD, que será detalhada no próximo tópico.
 
-1. **API Backend**: Desenvolvida em Python com Flask, responsável por expor os dados de vitivinicultura.
-2. **Banco de Dados**: Utiliza SQLite para armazenamento local dos dados.
-3. **Scripts de Ingestão**: Scripts que fazem o download e o parsing dos dados CSV da Embrapa, inserindo-os no banco de dados.
+### Deploy e Armazenamento:
+O código do repositório é zipado e enviado para um bucket S3.
+
+### Configuração da EC2:
+A arquitetura da EC2 é configurada, incluindo os grupos de segurança necessários.
+
+### Sincronização e Instalação:
+- Quando a EC2 inicia, ela sincroniza com o arquivo no S3.
+- O processo de instalação da API Flask é realizado na EC2.
+- A API é iniciada, começando com a execução do scrapping para baixar os arquivos CSV.
+- Em seguida, são executados os CRUDs para criar as tabelas e preencher os dados no SQLite.
+- Todos os endpoints são documentados no Swagger.
+
+### Atualização de EC2 Existente:
+- Se já existir uma instância EC2 rodando, ela não será destruída e recriada.
+- O arquivo zip do repositório será sobrescrito.
+- Um comando CLI será executado para reiniciar a EC2.
+- O script de boot será executado novamente, apagando os arquivos atuais.
+- A sincronização com o S3 será refeita com o novo código em produção, seguido pelo processo de instalação.
+
+## Push e Execução da Esteira
+Cada push no repositório aciona a esteira de CI/CD, que será detalhada no próximo tópico.
+
+## Deploy e Armazenamento
+O código do repositório é zipado e enviado para um bucket S3.
+
+## Configuração da EC2
+A arquitetura da EC2 é configurada, incluindo os grupos de segurança necessários.
+
+## Sincronização e Instalação
+- Quando a EC2 inicia, ela sincroniza com o arquivo no S3.
+- O processo de instalação da API Flask é realizado na EC2.
+- A API é iniciada, começando com a execução do scrapping para baixar os arquivos CSV.
+- Em seguida, são executados os CRUDs para criar as tabelas e preencher os dados no SQLite.
+- Todos os endpoints são documentados no Swagger.
+
+## Atualização de EC2 Existente
+- Se já existir uma instância EC2 rodando, ela não será destruída e recriada.
+- O arquivo zip do repositório será sobrescrito.
+- Um comando CLI será executado para reiniciar a EC2.
+- O script de boot será executado novamente, apagando os arquivos atuais.
+- A sincronização com o S3 será refeita com o novo código em produção, seguido pelo processo de instalação.
+
 
 ## Pipeline de Deploy
 
